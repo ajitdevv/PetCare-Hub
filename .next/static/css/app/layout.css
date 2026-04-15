@@ -300,6 +300,9 @@
   .top-4 {
     top: calc(var(--spacing) * 4);
   }
+  .top-5 {
+    top: calc(var(--spacing) * 5);
+  }
   .top-8 {
     top: calc(var(--spacing) * 8);
   }
