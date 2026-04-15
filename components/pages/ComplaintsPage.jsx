@@ -11,16 +11,18 @@ export function ComplaintsPage() {
   const { complaints, createComplaint } = useAppContext();
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   async function handleSubmit(event) {
     event.preventDefault();
     if (!message.trim()) return;
+    setSubmitError("");
     setLoading(true);
     try {
       await createComplaint(message);
       setMessage("");
     } catch (error) {
-      console.error("Failed to submit complaint:", error);
+      setSubmitError(error.message || "Failed to submit ticket. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -50,6 +52,9 @@ export function ComplaintsPage() {
                 onChange={(event) => setMessage(event.target.value)}
                 required
               />
+              {submitError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{submitError}</div>
+              )}
               <div className="flex justify-end">
                 <Button type="submit" disabled={loading || !message.trim()}>
                   {loading ? "Submitting..." : "Submit Ticket"}

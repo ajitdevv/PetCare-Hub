@@ -11,6 +11,7 @@ export function ProductsPage() {
   const [filter, setFilter] = useState("All");
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
 
   const categories = ["All", ...new Set(products.map((product) => product.category))];
   const filteredProducts =
@@ -19,13 +20,14 @@ export function ProductsPage() {
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   async function handleCheckout() {
+    setCheckoutError("");
     setIsCheckingOut(true);
     try {
       await checkout();
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (error) {
-      window.alert(`Checkout failed: ${error.message}`);
+      setCheckoutError(error.message || "Checkout failed. Please try again.");
     } finally {
       setIsCheckingOut(false);
     }
@@ -103,6 +105,9 @@ export function ProductsPage() {
             <div className="mt-2 flex items-center justify-center gap-1 text-sm text-green-600">
               <CheckCircle size={14} /> Order Placed!
             </div>
+          ) : null}
+          {checkoutError ? (
+            <div className="mt-2 rounded-lg bg-red-50 p-2 text-xs text-red-700">{checkoutError}</div>
           ) : null}
         </div>
       ) : null}
