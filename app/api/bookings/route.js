@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/server/auth";
 import { addBooking, listBookings } from "@/lib/server/data";
+import { apiError } from "@/lib/server/api-error";
 
 export async function GET() {
   try {
     const user = await getSessionUser();
     return NextResponse.json(await listBookings(user));
   } catch (error) {
-    return NextResponse.json({ message: error.message }, { status: 401 });
+    return apiError(error);
   }
 }
 
@@ -17,6 +18,6 @@ export async function POST(request) {
     const body = await request.json();
     return NextResponse.json(await addBooking(user, body), { status: 201 });
   } catch (error) {
-    return NextResponse.json({ message: error.message }, { status: 401 });
+    return apiError(error);
   }
 }

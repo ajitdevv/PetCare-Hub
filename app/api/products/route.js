@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/server/auth";
 import { addProduct, listProducts } from "@/lib/server/data";
+import { apiError } from "@/lib/server/api-error";
 
 export async function GET() {
-  return NextResponse.json(await listProducts());
+  try {
+    return NextResponse.json(await listProducts());
+  } catch (error) {
+    return apiError(error);
+  }
 }
 
 export async function POST(request) {
@@ -12,9 +17,6 @@ export async function POST(request) {
     const body = await request.json();
     return NextResponse.json(await addProduct(user, body), { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message || "Unable to add product" },
-      { status: error.message === "Admin access required" ? 403 : 400 }
-    );
+    return apiError(error);
   }
 }

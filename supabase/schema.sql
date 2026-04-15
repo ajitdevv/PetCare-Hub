@@ -19,7 +19,7 @@ create table if not exists pets (
   type        text        not null,
   breed       text        not null default '',
   age         integer     not null default 0,
-  owner_id    uuid        not null references users(id) on delete cascade,
+  owner       uuid        not null references users(id) on delete cascade,
   created_at  timestamptz not null default now()
 );
 

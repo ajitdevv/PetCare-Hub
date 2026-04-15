@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSessionUser } from "@/lib/server/auth";
 import { removeProduct } from "@/lib/server/data";
+import { apiError } from "@/lib/server/api-error";
 
 export async function DELETE(_request, { params }) {
   try {
@@ -8,9 +9,6 @@ export async function DELETE(_request, { params }) {
     await removeProduct(user, params.id);
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json(
-      { message: error.message || "Unable to delete product" },
-      { status: error.message === "Admin access required" ? 403 : 400 }
-    );
+    return apiError(error);
   }
 }
