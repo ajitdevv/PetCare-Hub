@@ -1,9 +1,7 @@
 {
-  "/api/auth/register/route": "app/api/auth/register/route.js",
-  "/api/pets/route": "app/api/pets/route.js",
-  "/api/complaints/route": "app/api/complaints/route.js",
-  "/api/orders/route": "app/api/orders/route.js",
   "/api/auth/login/route": "app/api/auth/login/route.js",
+  "/api/pets/route": "app/api/pets/route.js",
   "/api/bookings/route": "app/api/bookings/route.js",
-  "/api/complaints/[id]/route": "app/api/complaints/[id]/route.js"
+  "/api/orders/route": "app/api/orders/route.js",
+  "/api/complaints/route": "app/api/complaints/route.js"
 }
