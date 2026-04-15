@@ -13,6 +13,7 @@ export function ProductsManagerPage() {
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(null);
   const [formError, setFormError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -22,11 +23,12 @@ export function ProductsManagerPage() {
   });
 
   async function handleDelete(id) {
+    setDeleteError("");
     setDeleteLoading(id);
     try {
       await deleteProduct(id);
     } catch (error) {
-      console.error("Delete failed:", error);
+      setDeleteError(error.message || "Failed to delete product.");
     } finally {
       setDeleteLoading(null);
     }
@@ -78,7 +80,12 @@ export function ProductsManagerPage() {
           </Card>
 
           <Card className="lg:col-span-2">
-            <CardHeader><CardTitle>Current Products</CardTitle></CardHeader>
+            <CardHeader>
+              <CardTitle>Current Products</CardTitle>
+              {deleteError && (
+                <div className="mt-2 rounded-lg border border-red-200 bg-red-50 p-2 text-sm text-red-700">{deleteError}</div>
+              )}
+            </CardHeader>
             <CardContent className="overflow-x-auto p-0">
               <table className="w-full text-left text-sm text-gray-500">
                 <thead className="bg-gray-50 text-xs uppercase text-gray-700">

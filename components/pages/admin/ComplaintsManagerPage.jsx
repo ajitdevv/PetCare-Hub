@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { AuthGuard } from "@/components/AuthGuard";
 import { useAppContext } from "@/components/providers/AppProvider";
@@ -8,12 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 
 export function ComplaintsManagerPage() {
   const { complaints, users, resolveComplaint } = useAppContext();
+  const [resolveError, setResolveError] = useState("");
 
   async function markResolved(id) {
+    setResolveError("");
     try {
       await resolveComplaint(id);
     } catch (error) {
-      console.error("Failed to resolve complaint:", error);
+      setResolveError(error.message || "Failed to resolve ticket.");
     }
   }
 
@@ -24,6 +27,10 @@ export function ComplaintsManagerPage() {
           <h1 className="text-3xl font-bold text-gray-900">Manage Tickets</h1>
           <p className="mt-1 text-gray-500">Review user complaints and resolve them.</p>
         </div>
+
+        {resolveError && (
+          <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{resolveError}</div>
+        )}
 
         <Card>
           <CardHeader><CardTitle>All Support Tickets</CardTitle></CardHeader>
